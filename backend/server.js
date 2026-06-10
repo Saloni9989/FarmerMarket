@@ -15,7 +15,9 @@ app.use(cors({
       'http://localhost:5500',
       'http://127.0.0.1:5500',
       'http://127.0.0.1:3000',
+      'https://farmer-market-tau.vercel.app',
       'https://farmer-market-git-main-saloni9989s-projects.vercel.app',
+      'https://farmer-market-rh4zqnckv-saloni9989s-projects.vercel.app',
       'https://farmermarket-opyt.onrender.com'
     ];
     if (!origin || allowed.some(o => origin.startsWith(o))) {
