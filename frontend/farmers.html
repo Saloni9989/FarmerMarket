@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmers - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/farmers.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo"><i class="fas fa-seedling"></i><span>Krishi<span class="green">Market</span></span></a>
+      <div class="nav-search"><input type="text" id="navSearch" placeholder="Search farmers..." /><button onclick="handleSearch()"><i class="fas fa-search"></i></button></div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="farmers.html" class="active">Farmers</a></li>
+        <li><a href="#" id="dashboardLink" style="display:none">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-outline">Login</a>
+          <a href="register.html" class="btn-primary">Register</a>
+        </div>
+        <div id="userMenu" class="user-menu" style="display:none">
+          <div class="user-avatar" onclick="toggleUserDropdown()"><i class="fas fa-user-circle"></i><span id="userName">User</span><i class="fas fa-chevron-down"></i></div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="ordersLink"><i class="fas fa-box"></i> Orders</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="farmers-page">
+    <div class="farmers-header">
+      <div class="container">
+        <h1>Meet Our Farmers</h1>
+        <p>Passionate growers who bring fresh, quality produce directly from their fields to your table</p>
+        <div class="farmers-search">
+          <input type="text" id="farmerSearch" placeholder="Search by name, location or farm..." onkeyup="searchFarmers()" />
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="farmers-filters">
+        <div class="filter-chips">
+          <button class="fchip active" onclick="filterByState('', this)">All States</button>
+          <button class="fchip" onclick="filterByState('Maharashtra', this)">Maharashtra</button>
+          <button class="fchip" onclick="filterByState('Punjab', this)">Punjab</button>
+          <button class="fchip" onclick="filterByState('Gujarat', this)">Gujarat</button>
+          <button class="fchip" onclick="filterByState('Karnataka', this)">Karnataka</button>
+          <button class="fchip" onclick="filterByState('Uttar Pradesh', this)">UP</button>
+          <button class="fchip" onclick="filterByState('Rajasthan', this)">Rajasthan</button>
+        </div>
+        <div class="filter-chips">
+          <button class="fchip active" onclick="filterByMethod('', this)">All Methods</button>
+          <button class="fchip" onclick="filterByMethod('organic', this)">🌿 Organic</button>
+          <button class="fchip" onclick="filterByMethod('natural', this)">Natural</button>
+          <button class="fchip" onclick="filterByMethod('conventional', this)">Conventional</button>
+        </div>
+      </div>
+
+      <div id="farmersCount" class="farmers-count"></div>
+      <div class="farmers-grid" id="farmersGrid">
+        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading farmers...</div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/farmers.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Dashboard - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/farmer-dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo"><i class="fas fa-seedling"></i><span>Krishi<span class="green">Market</span></span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="farmer-dashboard.html" class="active">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <div id="userMenu" class="user-menu">
+          <div class="user-avatar" onclick="toggleUserDropdown()"><i class="fas fa-user-circle"></i><span id="userName">Farmer</span><i class="fas fa-chevron-down"></i></div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="farmer-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="user-profile-card">
+        <div class="profile-avatar"><i class="fas fa-tractor"></i></div>
+        <div class="profile-info">
+          <div class="profile-name" id="sidebarName">Loading...</div>
+          <div class="profile-role">Farmer</div>
+          <div id="verificationBadge" class="verified-badge badge-pending" style="margin-top:4px">Pending</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" onclick="showTab('overview', this)"><i class="fas fa-home"></i> Overview</a>
+        <a href="#" class="sidebar-link" onclick="showTab('products', this)"><i class="fas fa-box-open"></i> My Products</a>
+        <a href="#" class="sidebar-link" onclick="showTab('add-product', this)"><i class="fas fa-plus-circle"></i> Add Product</a>
+        <a href="#" class="sidebar-link" onclick="showTab('orders', this)"><i class="fas fa-shopping-bag"></i> Orders</a>
+        <a href="#" class="sidebar-link" onclick="showTab('profile', this)"><i class="fas fa-user"></i> Farm Profile</a>
+        <a href="#" class="sidebar-link text-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="dashboard-main">
+      <!-- Setup Banner (shown when not verified) -->
+      <div id="setupBanner" class="setup-banner" style="display:none">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>Complete your farm profile!</strong>
+          <p>Your account is pending verification. Complete your profile to start selling.</p>
+        </div>
+        <button onclick="showTab('profile', null)" class="btn-primary">Complete Profile</button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div id="tab-overview" class="tab-content active">
+        <h2 class="dash-title">Farmer Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#e8f5e9;color:var(--primary)"><i class="fas fa-box-open"></i></div>
+            <div class="stat-info"><div class="stat-number" id="statProducts">0</div><div class="stat-label">Total Products</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#e3f2fd;color:#1565c0"><i class="fas fa-shopping-bag"></i></div>
+            <div class="stat-info"><div class="stat-number" id="statOrders">0</div><div class="stat-label">Total Orders</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#fff3e0;color:#e65100"><i class="fas fa-clock"></i></div>
+            <div class="stat-info"><div class="stat-number" id="statPending">0</div><div class="stat-label">Pending Orders</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#e8f5e9;color:var(--primary-dark)"><i class="fas fa-rupee-sign"></i></div>
+            <div class="stat-info"><div class="stat-number" id="statRevenue">₹0</div><div class="stat-label">Total Revenue</div></div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Recent Orders</h3>
+        <div id="recentOrdersList">
+          <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+      </div>
+
+      <!-- Products Tab -->
+      <div id="tab-products" class="tab-content">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <h2 class="dash-title" style="margin:0">My Products</h2>
+          <button class="btn-primary" onclick="showTab('add-product', null)"><i class="fas fa-plus"></i> Add New</button>
+        </div>
+        <div id="myProductsList">
+          <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+      </div>
+
+      <!-- Add Product Tab -->
+      <div id="tab-add-product" class="tab-content">
+        <h2 class="dash-title" id="addProductTitle">Add New Product</h2>
+        <div class="form-card">
+          <form id="productForm" onsubmit="saveProduct(event)" enctype="multipart/form-data">
+            <input type="hidden" id="editProductId" />
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Product Name *</label>
+                <input type="text" id="pName" required placeholder="e.g. Fresh Tomatoes" />
+              </div>
+              <div class="form-group">
+                <label>Category *</label>
+                <select id="pCategory" required>
+                  <option value="">Select Category</option>
+                  <option value="vegetables">Vegetables</option>
+                  <option value="fruits">Fruits</option>
+                  <option value="dairy">Dairy</option>
+                  <option value="grains">Grains</option>
+                  <option value="spices">Spices</option>
+                  <option value="herbs">Herbs</option>
+                  <option value="pulses">Pulses</option>
+                  <option value="oilseeds">Oilseeds</option>
+                  <option value="flowers">Flowers</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Price per unit (₹) *</label>
+                <input type="number" id="pPrice" required min="0" step="0.01" placeholder="e.g. 50" />
+              </div>
+              <div class="form-group">
+                <label>Unit *</label>
+                <select id="pUnit" required>
+                  <option value="kg">kg</option>
+                  <option value="g">g</option>
+                  <option value="litre">Litre</option>
+                  <option value="ml">ml</option>
+                  <option value="piece">Piece</option>
+                  <option value="dozen">Dozen</option>
+                  <option value="bundle">Bundle</option>
+                  <option value="bag">Bag</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Available Quantity *</label>
+                <input type="number" id="pQty" required min="0" placeholder="e.g. 100" />
+              </div>
+              <div class="form-group">
+                <label>Harvest Date</label>
+                <input type="date" id="pHarvestDate" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea id="pDescription" placeholder="Describe your product, farming method, etc." rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="pOrganic" style="accent-color:var(--primary);margin-right:8px">
+                This product is Organic
+              </label>
+            </div>
+            <div class="form-group">
+              <label>Product Images (up to 5)</label>
+              <input type="file" id="pImages" multiple accept="image/*" />
+              <small style="color:var(--text-light);font-size:12px">Max 5MB each. JPG, PNG, WebP supported.</small>
+            </div>
+            <div style="display:flex;gap:12px">
+              <button type="submit" class="btn-primary" id="saveProductBtn">
+                <i class="fas fa-save"></i> <span id="saveProductText">Save Product</span>
+              </button>
+              <button type="button" class="btn-outline" onclick="resetProductForm()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Orders Tab -->
+      <div id="tab-orders" class="tab-content">
+        <h2 class="dash-title">Customer Orders</h2>
+        <div class="order-filters">
+          <button class="order-filter active" onclick="filterFarmerOrders('', this)">All</button>
+          <button class="order-filter" onclick="filterFarmerOrders('placed', this)">New</button>
+          <button class="order-filter" onclick="filterFarmerOrders('confirmed', this)">Confirmed</button>
+          <button class="order-filter" onclick="filterFarmerOrders('processing', this)">Processing</button>
+          <button class="order-filter" onclick="filterFarmerOrders('dispatched', this)">Dispatched</button>
+          <button class="order-filter" onclick="filterFarmerOrders('delivered', this)">Delivered</button>
+        </div>
+        <div id="farmerOrdersList">
+          <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        </div>
+      </div>
+
+      <!-- Profile Tab -->
+      <div id="tab-profile" class="tab-content">
+        <h2 class="dash-title">Farm Profile</h2>
+        <div class="form-card">
+          <form id="farmProfileForm" onsubmit="saveFarmProfile(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Farm Name *</label>
+                <input type="text" id="fpFarmName" required />
+              </div>
+              <div class="form-group">
+                <label>Farm Size</label>
+                <select id="fpFarmSize">
+                  <option value="small">Small (&lt;5 acres)</option>
+                  <option value="medium">Medium (5-20 acres)</option>
+                  <option value="large">Large (&gt;20 acres)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>District</label>
+                <input type="text" id="fpDistrict" placeholder="e.g. Nashik" />
+              </div>
+              <div class="form-group">
+                <label>State *</label>
+                <select id="fpState" required>
+                  <option value="">Select State</option>
+                  <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option>
+                  <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+                  <option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option>
+                  <option>Maharashtra</option><option>Odisha</option><option>Punjab</option>
+                  <option>Rajasthan</option><option>Tamil Nadu</option><option>Telangana</option>
+                  <option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Farming Methods</label>
+              <div class="checkbox-group">
+                <label><input type="checkbox" value="organic" class="fp-method"> Organic</label>
+                <label><input type="checkbox" value="conventional" class="fp-method"> Conventional</label>
+                <label><input type="checkbox" value="natural" class="fp-method"> Natural</label>
+                <label><input type="checkbox" value="hydroponic" class="fp-method"> Hydroponic</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Crop Types</label>
+              <div class="checkbox-group">
+                <label><input type="checkbox" value="vegetables" class="fp-crop"> Vegetables</label>
+                <label><input type="checkbox" value="fruits" class="fp-crop"> Fruits</label>
+                <label><input type="checkbox" value="dairy" class="fp-crop"> Dairy</label>
+                <label><input type="checkbox" value="grains" class="fp-crop"> Grains</label>
+                <label><input type="checkbox" value="spices" class="fp-crop"> Spices</label>
+                <label><input type="checkbox" value="pulses" class="fp-crop"> Pulses</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>About Your Farm</label>
+              <textarea id="fpDescription" rows="3" placeholder="Tell consumers about your farm, farming practices, etc."></textarea>
+            </div>
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Profile</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/farmer-dashboard.js"></script>
+</body>
+</html>

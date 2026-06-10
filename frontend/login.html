@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <a href="index.html" class="nav-logo"><i class="fas fa-seedling"></i><span>Krishi<span class="green">Market</span></span></a>
+        <h2>Welcome Back!</h2>
+        <p>Sign in to access fresh produce from local farmers. Your next healthy meal starts here.</p>
+      </div>
+      <div class="auth-illustration">
+        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&auto=format&fit=crop" alt="Farm" />
+        <div class="auth-features">
+          <div class="auth-feature"><i class="fas fa-check-circle"></i> Fresh produce daily</div>
+          <div class="auth-feature"><i class="fas fa-check-circle"></i> Verified farmers</div>
+          <div class="auth-feature"><i class="fas fa-check-circle"></i> Fair prices</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="auth-form-wrapper">
+        <h3>Sign In</h3>
+        <p class="auth-subtitle">Don't have an account? <a href="register.html">Register here</a></p>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Email Address</label>
+            <div class="input-with-icon">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" placeholder="you@example.com" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-with-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" placeholder="Your password" required />
+              <button type="button" class="eye-btn" onclick="togglePassword('password')">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe"> Remember me
+            </label>
+          </div>
+
+          <button type="submit" class="btn-auth" id="loginBtn">
+            <span id="loginBtnText">Sign In</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <div class="auth-divider"><span>or try demo accounts</span></div>
+
+        <div class="demo-accounts">
+          <button class="demo-btn" onclick="fillDemo('consumer')">
+            <i class="fas fa-user"></i> Consumer Demo
+          </button>
+          <button class="demo-btn" onclick="fillDemo('farmer')">
+            <i class="fas fa-tractor"></i> Farmer Demo
+          </button>
+          <button class="demo-btn" onclick="fillDemo('admin')">
+            <i class="fas fa-shield-alt"></i> Admin Demo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (Auth.isLoggedIn()) window.location.href = 'index.html';
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const btnText = document.getElementById('loginBtnText');
+      btn.disabled = true;
+      btnText.textContent = 'Signing in...';
+
+      try {
+        const data = await api.post('/auth/login', {
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value
+        });
+
+        Auth.save(data.token, data.user, data.farmerProfile);
+        showToast('Login successful! Redirecting...', 'success');
+
+        setTimeout(() => {
+          const role = data.user.role;
+          if (role === 'farmer') window.location.href = 'farmer-dashboard.html';
+          else if (role === 'admin') window.location.href = 'admin-dashboard.html';
+          else window.location.href = 'index.html';
+        }, 1200);
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.disabled = false;
+        btnText.textContent = 'Sign In';
+      }
+    }
+
+    function togglePassword(id) {
+      const input = document.getElementById(id);
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+
+    function fillDemo(role) {
+      const demos = {
+        consumer: { email: 'consumer@demo.com', password: 'demo123' },
+        farmer: { email: 'farmer@demo.com', password: 'demo123' },
+        admin: { email: 'admin@krishimarket.com', password: 'admin123' }
+      };
+      document.getElementById('email').value = demos[role].email;
+      document.getElementById('password').value = demos[role].password;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/products.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo"><i class="fas fa-seedling"></i><span>Krishi<span class="green">Market</span></span></a>
+      <div class="nav-search">
+        <input type="text" id="navSearch" placeholder="Search products..." />
+        <button onclick="handleSearch()"><i class="fas fa-search"></i></button>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html" class="active">Products</a></li>
+        <li><a href="farmers.html">Farmers</a></li>
+        <li><a href="#" id="dashboardLink" style="display:none">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-outline">Login</a>
+          <a href="register.html" class="btn-primary">Register</a>
+        </div>
+        <div id="userMenu" class="user-menu" style="display:none">
+          <div class="user-avatar" onclick="toggleUserDropdown()">
+            <i class="fas fa-user-circle"></i><span id="userName">User</span><i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="ordersLink"><i class="fas fa-box"></i> Orders</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar" id="filtersSidebar">
+      <div class="filters-header">
+        <h3><i class="fas fa-filter"></i> Filters</h3>
+        <button onclick="clearFilters()" class="clear-btn">Clear All</button>
+      </div>
+
+      <div class="filter-group">
+        <h4>Category</h4>
+        <div class="filter-options" id="categoryFilters">
+          <label class="filter-opt"><input type="radio" name="category" value=""> All Categories</label>
+          <label class="filter-opt"><input type="radio" name="category" value="vegetables"> 🥦 Vegetables</label>
+          <label class="filter-opt"><input type="radio" name="category" value="fruits"> 🍎 Fruits</label>
+          <label class="filter-opt"><input type="radio" name="category" value="dairy"> 🥛 Dairy</label>
+          <label class="filter-opt"><input type="radio" name="category" value="grains"> 🌾 Grains</label>
+          <label class="filter-opt"><input type="radio" name="category" value="spices"> 🌶️ Spices</label>
+          <label class="filter-opt"><input type="radio" name="category" value="herbs"> 🌿 Herbs</label>
+          <label class="filter-opt"><input type="radio" name="category" value="pulses"> 🫘 Pulses</label>
+          <label class="filter-opt"><input type="radio" name="category" value="oilseeds"> 🌻 Oilseeds</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4>Farming Method</h4>
+        <label class="filter-opt"><input type="checkbox" name="organic" id="organicFilter"> Organic Only</label>
+      </div>
+
+      <div class="filter-group">
+        <h4>Price Range</h4>
+        <div class="price-range">
+          <input type="number" id="minPrice" placeholder="Min ₹" min="0" />
+          <span>—</span>
+          <input type="number" id="maxPrice" placeholder="Max ₹" min="0" />
+        </div>
+        <button onclick="applyFilters()" class="btn-primary" style="width:100%;margin-top:10px;justify-content:center">Apply</button>
+      </div>
+
+      <div class="filter-group">
+        <h4>Sort By</h4>
+        <select id="sortFilter" onchange="applyFilters()">
+          <option value="-createdAt">Newest First</option>
+          <option value="price">Price: Low to High</option>
+          <option value="-price">Price: High to Low</option>
+          <option value="-rating.average">Top Rated</option>
+          <option value="-totalSold">Best Selling</option>
+        </select>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="products-main">
+      <div class="products-toolbar">
+        <div class="toolbar-left">
+          <button class="filter-toggle" onclick="toggleFilters()"><i class="fas fa-filter"></i> Filters</button>
+          <h2 id="pageTitle">All Products</h2>
+          <span id="productCount" class="product-count"></span>
+        </div>
+        <div class="active-filters" id="activeFilters"></div>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading products...</div>
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+</body>
+</html>

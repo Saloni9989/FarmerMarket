@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Krishi Market - Fresh From Farm to Your Table</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <i class="fas fa-seedling"></i>
+        <span>Krishi<span class="green">Market</span></span>
+      </a>
+      <div class="nav-search">
+        <input type="text" id="navSearch" placeholder="Search fresh produce, farmers..." />
+        <button onclick="handleSearch()"><i class="fas fa-search"></i></button>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="farmers.html">Farmers</a></li>
+        <li><a href="#" id="dashboardLink" style="display:none">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-outline">Login</a>
+          <a href="register.html" class="btn-primary">Register</a>
+        </div>
+        <div id="userMenu" class="user-menu" style="display:none">
+          <div class="user-avatar" onclick="toggleUserDropdown()">
+            <i class="fas fa-user-circle"></i>
+            <span id="userName">User</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="ordersLink"><i class="fas fa-box"></i> Orders</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <span class="hero-badge"><i class="fas fa-leaf"></i> 100% Fresh & Organic</span>
+        <h1>Fresh From Farm<br /><span class="highlight">Directly to You</span></h1>
+        <p>Connect directly with local farmers. Get the freshest vegetables, fruits, dairy and grains delivered to your doorstep at fair prices.</p>
+        <div class="hero-actions">
+          <a href="products.html" class="btn-hero-primary">Shop Now <i class="fas fa-arrow-right"></i></a>
+          <a href="farmers.html" class="btn-hero-outline">Meet Farmers</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong id="statFarmers">500+</strong><span>Farmers</span></div>
+          <div class="stat"><strong id="statProducts">2000+</strong><span>Products</span></div>
+          <div class="stat"><strong id="statConsumers">10K+</strong><span>Happy Customers</span></div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-img-wrapper">
+          <div class="floating-card card-1">
+            <i class="fas fa-check-circle"></i>
+            <span>Verified Farmers</span>
+          </div>
+          <div class="floating-card card-2">
+            <i class="fas fa-truck"></i>
+            <span>Same Day Delivery</span>
+          </div>
+          <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop" alt="Fresh produce" />
+        </div>
+      </div>
+    </div>
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f8fafc"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Shop by Category</h2>
+        <p>Explore our wide range of fresh farm products</p>
+      </div>
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="featured section bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured Products</h2>
+        <p>Handpicked fresh produce from our best farmers</p>
+        <a href="products.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="products-grid" id="featuredProducts">
+        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works section">
+    <div class="container">
+      <div class="section-header">
+        <h2>How Krishi Market Works</h2>
+        <p>Simple steps to get fresh produce from farm to table</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-icon"><i class="fas fa-search"></i></div>
+          <div class="step-number">01</div>
+          <h3>Browse & Select</h3>
+          <p>Browse fresh products from verified local farmers in your area</p>
+        </div>
+        <div class="step">
+          <div class="step-icon"><i class="fas fa-shopping-cart"></i></div>
+          <div class="step-number">02</div>
+          <h3>Place Order</h3>
+          <p>Add items to cart and place your order with preferred delivery slot</p>
+        </div>
+        <div class="step">
+          <div class="step-icon"><i class="fas fa-user-check"></i></div>
+          <div class="step-number">03</div>
+          <h3>Farmer Confirms</h3>
+          <p>Your local farmer confirms and prepares your fresh order</p>
+        </div>
+        <div class="step">
+          <div class="step-icon"><i class="fas fa-truck"></i></div>
+          <div class="step-number">04</div>
+          <h3>Get Delivered</h3>
+          <p>Receive fresh produce right at your doorstep</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Farmers -->
+  <section class="farmers-section section bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Meet Our Farmers</h2>
+        <p>Passionate growers dedicated to bringing you the best</p>
+        <a href="farmers.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="farmers-grid" id="featuredFarmers">
+        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits section">
+    <div class="container">
+      <div class="benefits-grid">
+        <div class="benefit">
+          <i class="fas fa-leaf"></i>
+          <h3>100% Fresh</h3>
+          <p>Products harvested and delivered within 24 hours</p>
+        </div>
+        <div class="benefit">
+          <i class="fas fa-shield-alt"></i>
+          <h3>Verified Farmers</h3>
+          <p>All farmers are KYC verified and quality checked</p>
+        </div>
+        <div class="benefit">
+          <i class="fas fa-hand-holding-usd"></i>
+          <h3>Fair Prices</h3>
+          <p>No middlemen means better prices for everyone</p>
+        </div>
+        <div class="benefit">
+          <i class="fas fa-undo"></i>
+          <h3>Easy Returns</h3>
+          <p>Quality guarantee with hassle-free return policy</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <div>
+          <h2>Are You a Farmer?</h2>
+          <p>Join thousands of farmers selling directly to consumers. Increase your income, reach more customers.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="register.html?role=farmer" class="btn-cta-primary">Register as Farmer</a>
+          <a href="farmers.html" class="btn-cta-outline">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <i class="fas fa-seedling"></i>
+            <span>Krishi<span>Market</span></span>
+          </div>
+          <p>Connecting farmers and consumers directly for a healthier, more transparent food system.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="farmers.html">Farmers</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="products.html?category=vegetables">Vegetables</a></li>
+            <li><a href="products.html?category=fruits">Fruits</a></li>
+            <li><a href="products.html?category=dairy">Dairy</a></li>
+            <li><a href="products.html?category=grains">Grains</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact Us</h4>
+          <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+          <p><i class="fas fa-envelope"></i> hello@krishimarket.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> New Delhi, India</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Krishi Market. All rights reserved.</p>
+        <p>Made with <i class="fas fa-heart" style="color:#e74c3c"></i> for Indian Farmers</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

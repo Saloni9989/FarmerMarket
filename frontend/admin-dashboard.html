@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar" style="background:#1b5e20">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" style="color:#fff"><i class="fas fa-seedling" style="color:#a5d6a7"></i><span>Krishi<span style="color:#a5d6a7">Market</span> <small style="font-size:12px;background:#2e7d32;padding:2px 8px;border-radius:4px;margin-left:4px">ADMIN</small></span></a>
+      <div class="nav-actions">
+        <div class="user-menu">
+          <div class="user-avatar" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.3)" onclick="toggleUserDropdown()">
+            <i class="fas fa-shield-alt"></i><span id="userName">Admin</span><i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <aside class="dashboard-sidebar" style="background:#1a1a2e;border-right-color:#2d2d44">
+      <div class="user-profile-card" style="border-bottom-color:#2d2d44">
+        <div class="profile-avatar" style="color:#a5d6a7"><i class="fas fa-shield-alt"></i></div>
+        <div class="profile-info">
+          <div class="profile-name" id="sidebarName" style="color:#fff">Admin</div>
+          <div class="profile-role" style="background:#2d2d44;color:#a5d6a7">Super Admin</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active admin-link" onclick="showTab('overview', this)"><i class="fas fa-home"></i> Overview</a>
+        <a href="#" class="sidebar-link admin-link" onclick="showTab('farmers', this)"><i class="fas fa-tractor"></i> Farmers</a>
+        <a href="#" class="sidebar-link admin-link" onclick="showTab('consumers', this)"><i class="fas fa-users"></i> Consumers</a>
+        <a href="#" class="sidebar-link admin-link" onclick="showTab('products', this)"><i class="fas fa-box-open"></i> Products</a>
+        <a href="#" class="sidebar-link admin-link" onclick="showTab('orders', this)"><i class="fas fa-shopping-bag"></i> Orders</a>
+        <a href="#" class="sidebar-link text-danger admin-link" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main">
+      <!-- Overview -->
+      <div id="tab-overview" class="tab-content active">
+        <h2 class="dash-title">Platform Overview</h2>
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+          <div class="stat-card"><div class="stat-icon" style="background:#e8f5e9;color:var(--primary)"><i class="fas fa-tractor"></i></div><div class="stat-info"><div class="stat-number" id="sTotalFarmers">0</div><div class="stat-label">Total Farmers</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#e3f2fd;color:#1565c0"><i class="fas fa-users"></i></div><div class="stat-info"><div class="stat-number" id="sTotalUsers">0</div><div class="stat-label">Consumers</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fff3e0;color:#e65100"><i class="fas fa-shopping-bag"></i></div><div class="stat-info"><div class="stat-number" id="sTotalOrders">0</div><div class="stat-label">Total Orders</div></div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#f3e5f5;color:#6a1b9a"><i class="fas fa-rupee-sign"></i></div><div class="stat-info"><div class="stat-number" id="sTotalRevenue">₹0</div><div class="stat-label">Total Revenue</div></div></div>
+        </div>
+
+        <div class="admin-grid">
+          <div>
+            <h3 class="section-title">Pending Farmer Approvals</h3>
+            <div id="pendingFarmersList"></div>
+          </div>
+          <div>
+            <h3 class="section-title">Recent Orders</h3>
+            <div id="adminRecentOrders"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Farmers -->
+      <div id="tab-farmers" class="tab-content">
+        <h2 class="dash-title">Farmer Management</h2>
+        <div class="order-filters" style="margin-bottom:20px">
+          <button class="order-filter active" onclick="loadAdminFarmers('', this)">All</button>
+          <button class="order-filter" onclick="loadAdminFarmers('pending', this)">Pending</button>
+          <button class="order-filter" onclick="loadAdminFarmers('approved', this)">Approved</button>
+          <button class="order-filter" onclick="loadAdminFarmers('rejected', this)">Rejected</button>
+        </div>
+        <div id="farmersList"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>
+      </div>
+
+      <!-- Consumers -->
+      <div id="tab-consumers" class="tab-content">
+        <h2 class="dash-title">Consumer Management</h2>
+        <div id="consumersList"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>
+      </div>
+
+      <!-- Products -->
+      <div id="tab-products" class="tab-content">
+        <h2 class="dash-title">Product Management</h2>
+        <div id="adminProductsList"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>
+      </div>
+
+      <!-- Orders -->
+      <div id="tab-orders" class="tab-content">
+        <h2 class="dash-title">Order Management</h2>
+        <div class="order-filters">
+          <button class="order-filter active" onclick="loadAdminOrders('', this)">All</button>
+          <button class="order-filter" onclick="loadAdminOrders('placed', this)">Placed</button>
+          <button class="order-filter" onclick="loadAdminOrders('confirmed', this)">Confirmed</button>
+          <button class="order-filter" onclick="loadAdminOrders('delivered', this)">Delivered</button>
+          <button class="order-filter" onclick="loadAdminOrders('cancelled', this)">Cancelled</button>
+        </div>
+        <div id="adminOrdersList"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
