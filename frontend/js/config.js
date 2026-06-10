@@ -1,12 +1,12 @@
 // API Configuration
-// Change API_BASE to your Render backend URL when deploying
+// Automatically switches between local and production
 const CONFIG = {
   API_BASE: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000/api'
-    : 'https://farmermarket-opyt.onrender.com/api',
+    : 'https://YOUR-RENDER-APP-NAME.onrender.com/api',
   UPLOADS_BASE: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://farmermarket-opyt.onrender.com'
+    : 'https://YOUR-RENDER-APP-NAME.onrender.com'
 };
 
 // API Helper
