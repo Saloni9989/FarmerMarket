@@ -15,12 +15,13 @@ app.use(cors({
       'http://localhost:5500',
       'http://127.0.0.1:5500',
       'http://127.0.0.1:3000',
-      'https://YOUR-NETLIFY-APP.netlify.app'  // ← replace after Netlify deploy
+      'https://farmer-market-git-main-saloni9989s-projects.vercel.app',
+      'https://farmermarket-opyt.onrender.com'
     ];
     if (!origin || allowed.some(o => origin.startsWith(o))) {
       callback(null, true);
     } else {
-      callback(null, true); // open during dev; restrict after go-live
+      callback(null, true);
     }
   },
   credentials: true

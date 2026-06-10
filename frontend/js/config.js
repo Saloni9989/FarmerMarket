@@ -1,12 +1,11 @@
 // API Configuration
-// Automatically switches between local and production
 const CONFIG = {
   API_BASE: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000/api'
-    : 'https://YOUR-RENDER-APP-NAME.onrender.com/api',
+    : 'https://farmermarket-opyt.onrender.com/api',
   UPLOADS_BASE: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000'
-    : 'https://YOUR-RENDER-APP-NAME.onrender.com'
+    : 'https://farmermarket-opyt.onrender.com'
 };
 
 // API Helper
