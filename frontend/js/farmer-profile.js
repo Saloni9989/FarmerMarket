@@ -80,6 +80,10 @@ function renderProducts(products, farmerId) {
     return;
   }
 
+  // Store products globally for cart access
+  window._farmerProducts = {};
+  products.forEach(p => { window._farmerProducts[p._id] = p; });
+
   grid.innerHTML = products.map(p => {
     const img = getImageUrl(p.images?.[0]);
     const isOutOfStock = p.availableQuantity === 0;
@@ -97,7 +101,7 @@ function renderProducts(products, farmerId) {
           <div class="product-rating">${generateStars(p.rating?.average || 0, p.rating?.count || 0)}</div>
           <div class="product-footer">
             <div class="product-price">₹${p.price} <span>/${p.unit}</span></div>
-            <button class="add-to-cart" onclick="addToCartFromProfile(event, ${JSON.stringify(JSON.stringify(p))})" ${isOutOfStock ? 'disabled' : ''}>
+            <button class="add-to-cart" onclick="addToCartFromProfile(event, '${p._id}')" ${isOutOfStock ? 'disabled' : ''}>
               <i class="fas fa-cart-plus"></i> Add
             </button>
           </div>
@@ -107,12 +111,12 @@ function renderProducts(products, farmerId) {
   }).join('');
 }
 
-function addToCartFromProfile(event, productJson) {
+function addToCartFromProfile(event, productId) {
   event.stopPropagation();
-  try {
-    const product = JSON.parse(productJson);
+  const product = window._farmerProducts?.[productId];
+  if (product) {
     Cart.add(product);
-  } catch(e) {
+  } else {
     showToast('Could not add to cart', 'error');
   }
 }

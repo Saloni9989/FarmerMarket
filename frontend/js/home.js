@@ -59,6 +59,9 @@ function createProductCard(p) {
   const img = getImageUrl(p.images?.[0]);
   const isOutOfStock = p.availableQuantity === 0;
 
+  window._products = window._products || {};
+  window._products[p._id] = p;
+
   return `
     <div class="product-card">
       <div class="product-img">
@@ -78,13 +81,23 @@ function createProductCard(p) {
         <div class="product-rating">${generateStars(p.rating?.average || 0, p.rating?.count || 0)}</div>
         <div class="product-footer">
           <div class="product-price">₹${p.price} <span>/${p.unit}</span></div>
-          <button class="add-to-cart" onclick="addToCart(event, ${JSON.stringify(JSON.stringify(p))})" ${isOutOfStock ? 'disabled' : ''}>
+          <button class="add-to-cart" onclick="addToCart(event,'${p._id}')" ${isOutOfStock ? 'disabled' : ''}>
             <i class="fas fa-cart-plus"></i> Add
           </button>
         </div>
       </div>
     </div>
   `;
+}
+
+function addToCart(event, productId) {
+  event.stopPropagation();
+  const product = window._products?.[productId];
+  if (product) {
+    Cart.add(product);
+  } else {
+    showToast('Could not add to cart', 'error');
+  }
 }
 
 function createFarmerCard(f) {

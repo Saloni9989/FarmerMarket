@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Detail - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/product-detail.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo"><i class="fas fa-seedling"></i><span>Krishi<span class="green">Market</span></span></a>
+      <div class="nav-search"><input type="text" id="navSearch" placeholder="Search products..." /><button onclick="handleSearch()"><i class="fas fa-search"></i></button></div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html" class="active">Products</a></li>
+        <li><a href="farmers.html">Farmers</a></li>
+        <li><a href="#" id="dashboardLink" style="display:none">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-outline">Login</a>
+          <a href="register.html" class="btn-primary">Register</a>
+        </div>
+        <div id="userMenu" class="user-menu" style="display:none">
+          <div class="user-avatar" onclick="toggleUserDropdown()"><i class="fas fa-user-circle"></i><span id="userName">User</span><i class="fas fa-chevron-down"></i></div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="ordersLink"><i class="fas fa-box"></i> Orders</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="detail-page">
+    <div class="container">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="products.html">Products</a>
+        <i class="fas fa-chevron-right"></i>
+        <span id="breadProduct">Product</span>
+      </div>
+
+      <!-- Loading -->
+      <div id="loadingState" style="text-align:center;padding:80px 20px;color:var(--text-light)">
+        <i class="fas fa-spinner fa-spin" style="font-size:32px;color:var(--primary)"></i>
+        <p style="margin-top:16px">Loading product...</p>
+      </div>
+
+      <!-- Product Content -->
+      <div id="productContent" style="display:none">
+        <div class="detail-grid">
+
+          <!-- Images -->
+          <div class="detail-images">
+            <div class="main-image-wrap">
+              <img id="mainImage" src="" alt="" />
+              <div id="organicBadge" class="detail-organic-badge" style="display:none">
+                <i class="fas fa-leaf"></i> Organic
+              </div>
+            </div>
+            <div class="thumb-images" id="thumbImages"></div>
+          </div>
+
+          <!-- Info -->
+          <div class="detail-info">
+            <div class="detail-category" id="detailCategory"></div>
+            <h1 class="detail-name" id="detailName"></h1>
+            <div class="detail-rating" id="detailRating"></div>
+
+            <div class="detail-price-row">
+              <div class="detail-price" id="detailPrice"></div>
+              <div class="detail-stock" id="detailStock"></div>
+            </div>
+
+            <p class="detail-description" id="detailDescription"></p>
+
+            <!-- Farmer Info -->
+            <div class="detail-farmer" id="detailFarmer"></div>
+
+            <!-- Harvest Date -->
+            <div class="detail-meta" id="detailMeta"></div>
+
+            <!-- Quantity & Add to Cart -->
+            <div class="detail-actions">
+              <div class="qty-selector">
+                <button onclick="changeQty(-1)"><i class="fas fa-minus"></i></button>
+                <input type="number" id="qtyInput" value="1" min="1" max="100" />
+                <button onclick="changeQty(1)"><i class="fas fa-plus"></i></button>
+              </div>
+              <button class="btn-add-detail" id="addToCartBtn" onclick="addToCartDetail()">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+              </button>
+            </div>
+
+            <!-- Tags -->
+            <div class="detail-tags" id="detailTags"></div>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="detail-reviews">
+          <h2><i class="fas fa-star"></i> Customer Reviews</h2>
+          <div id="reviewsList"></div>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="errorState" style="display:none;text-align:center;padding:80px 20px">
+        <i class="fas fa-exclamation-circle" style="font-size:48px;color:var(--border);display:block;margin-bottom:16px"></i>
+        <h2>Product not found</h2>
+        <a href="products.html" class="btn-primary" style="display:inline-flex;margin-top:16px">Browse Products</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/product-detail.js"></script>
+</body>
+</html>
