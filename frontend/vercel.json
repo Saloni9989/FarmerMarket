@@ -3,6 +3,7 @@
     { "source": "/", "destination": "/index.html" },
     { "source": "/products", "destination": "/products.html" },
     { "source": "/farmers", "destination": "/farmers.html" },
+    { "source": "/farmer-profile", "destination": "/farmer-profile.html" },
     { "source": "/login", "destination": "/login.html" },
     { "source": "/register", "destination": "/register.html" },
     { "source": "/cart", "destination": "/cart.html" },

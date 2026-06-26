@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Farmer Profile - Krishi Market</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/farmer-profile.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo"><i class="fas fa-seedling"></i><span>Krishi<span class="green">Market</span></span></a>
+      <div class="nav-search"><input type="text" id="navSearch" placeholder="Search products..." /><button onclick="handleSearch()"><i class="fas fa-search"></i></button></div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="farmers.html" class="active">Farmers</a></li>
+        <li><a href="#" id="dashboardLink" style="display:none">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <div id="authButtons" class="auth-buttons">
+          <a href="login.html" class="btn-outline">Login</a>
+          <a href="register.html" class="btn-primary">Register</a>
+        </div>
+        <div id="userMenu" class="user-menu" style="display:none">
+          <div class="user-avatar" onclick="toggleUserDropdown()"><i class="fas fa-user-circle"></i><span id="userName">User</span><i class="fas fa-chevron-down"></i></div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" id="ordersLink"><i class="fas fa-box"></i> Orders</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading State -->
+  <div id="loadingState" class="profile-loading">
+    <i class="fas fa-spinner fa-spin"></i> Loading farmer profile...
+  </div>
+
+  <!-- Profile Content -->
+  <div id="profileContent" style="display:none">
+
+    <!-- Cover & Basic Info -->
+    <div class="farmer-cover">
+      <div class="cover-bg"></div>
+      <div class="container">
+        <div class="farmer-hero">
+          <div class="farmer-hero-avatar" id="heroAvatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="farmer-hero-info">
+            <h1 id="farmerName">Loading...</h1>
+            <div id="farmName" class="farm-name"></div>
+            <div id="farmerLocation" class="farmer-loc"></div>
+            <div id="farmerBadges" class="farmer-badges"></div>
+          </div>
+          <div class="farmer-hero-stats">
+            <div class="hstat"><strong id="statRating">0</strong><span>Rating</span></div>
+            <div class="hstat"><strong id="statProducts">0</strong><span>Products</span></div>
+            <div class="hstat"><strong id="statReviews">0</strong><span>Reviews</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container profile-body">
+      <div class="profile-grid">
+
+        <!-- Left Column -->
+        <div class="profile-left">
+          <!-- About -->
+          <div class="profile-card">
+            <h3><i class="fas fa-info-circle"></i> About the Farm</h3>
+            <p id="farmDescription">No description available.</p>
+          </div>
+
+          <!-- Farm Details -->
+          <div class="profile-card">
+            <h3><i class="fas fa-tractor"></i> Farm Details</h3>
+            <div class="detail-list">
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-expand-arrows-alt"></i> Farm Size</span>
+                <span id="farmSize" class="detail-value">-</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-map-marker-alt"></i> Location</span>
+                <span id="farmFullLocation" class="detail-value">-</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-leaf"></i> Farming Methods</span>
+                <span id="farmMethods" class="detail-value">-</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-seedling"></i> Crop Types</span>
+                <span id="farmCrops" class="detail-value">-</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-shield-alt"></i> Verification</span>
+                <span id="farmVerification" class="detail-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="profile-card">
+            <h3><i class="fas fa-phone"></i> Contact</h3>
+            <div class="detail-list">
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-user"></i> Name</span>
+                <span id="contactName" class="detail-value">-</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-phone"></i> Phone</span>
+                <span id="contactPhone" class="detail-value">-</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="fas fa-envelope"></i> Email</span>
+                <span id="contactEmail" class="detail-value">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="profile-right">
+          <!-- Products -->
+          <div class="profile-card">
+            <div class="card-header-row">
+              <h3><i class="fas fa-box-open"></i> Products by this Farmer</h3>
+              <a id="viewAllProducts" href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="products-grid" id="farmerProductsGrid">
+              <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+          </div>
+
+          <!-- Reviews -->
+          <div class="profile-card">
+            <h3><i class="fas fa-star"></i> Customer Reviews</h3>
+            <div id="farmerReviews">
+              <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div id="errorState" style="display:none" class="error-state">
+    <i class="fas fa-exclamation-circle"></i>
+    <h2>Farmer not found</h2>
+    <p>The farmer profile you're looking for doesn't exist.</p>
+    <a href="farmers.html" class="btn-primary">Browse Farmers</a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/farmer-profile.js"></script>
+</body>
+</html>
